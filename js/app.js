@@ -3,8 +3,6 @@ const qwerty = document.getElementById("qwerty")
 const phrase = document.getElementById("phrase")
 const startButton = document.querySelector(".btn__reset")
 const startScreen = document.getElementById("overlay")
-let show = document.querySelectorAll(".show")
-let letter = document.querySelectorAll(".letter")
 const ul = phrase.firstElementChild
 const liveHeart = document.querySelector(".tries")
 const ol = liveHeart.parentElement
@@ -62,7 +60,7 @@ function checkLetter(btn) {
   return letterFound
 }
 
-/* Delegated click event listener attached to parent of on-screen // keyboard */
+/* Delegated click event listener attached to parent of on-screen keyboard */
 qwerty.addEventListener("click", (e) => {
   if (e.target.tagName === "BUTTON") {
     const btnClicked = e.target
@@ -77,8 +75,10 @@ qwerty.addEventListener("click", (e) => {
   }
 })
 
-// Checking for conditions for winning or losing current game
+// Check conditions for winning or losing current game
 function checkWin() {
+  let show = document.querySelectorAll(".show")
+  let letter = document.querySelectorAll(".letter")
   if (missed >= 5) {
     startScreen.className = "lose"
     startScreen.style.display = "flex"
