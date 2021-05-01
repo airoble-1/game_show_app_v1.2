@@ -1,12 +1,11 @@
-// Variable decleration
+// DOM selectors
 const qwerty = document.getElementById("qwerty")
 const phrase = document.getElementById("phrase")
 const startButton = document.querySelector(".btn__reset")
 const startScreen = document.getElementById("overlay")
 const ul = phrase.firstElementChild
-const liveHeart = document.querySelector(".tries")
-const ol = liveHeart.parentElement
 
+// In-game variable(s)
 let missed = 0
 
 // Begin game
@@ -14,16 +13,16 @@ startButton.addEventListener("click", () => {
   startScreen.style.display = "none"
 })
 
-// Phrases to select from
+// Phrases to select
 const phrases = [
-  "Be yourself everyone else is already taken",
-  "A Few Good Men",
-  "Terms of Endearment",
-  "Easy Rider",
-  "They may take our lives, but they'll never take our freedom",
+  "Mortal Kombat",
+  "Jurassic Park",
+  "Nobody",
+  "Watchmen",
+  "Justice League",
 ]
 
-// Picks a randome phrase
+// Pick a random phrase from array
 function getRandomPhraseAsArray(arr) {
   const randomIndex = Math.floor(Math.random() * arr.length)
   return arr[randomIndex].split("")
@@ -31,7 +30,7 @@ function getRandomPhraseAsArray(arr) {
 
 const phraseArray = getRandomPhraseAsArray(phrases)
 
-// Only letters from the phrase included in the list display
+// Only letters and spaces included in display
 function addPhraseToDisplay(arr) {
   for (let i = 0; i < arr.length; i++) {
     const listItem = document.createElement("LI")
@@ -39,13 +38,15 @@ function addPhraseToDisplay(arr) {
     ul.appendChild(listItem)
     if (arr[i] !== " ") {
       listItem.className = "letter"
+    } else {
+      listItem.className = "space"
     }
   }
 }
 
 addPhraseToDisplay(phraseArray)
 
-// Checking button click for same letter in list dispplay
+// Checking button click for same letter in dispplay
 function checkLetter(btn) {
   const letters = document.getElementsByClassName("letter")
   let letterFound = null
@@ -60,7 +61,7 @@ function checkLetter(btn) {
   return letterFound
 }
 
-/* Delegated click event listener attached to parent of on-screen keyboard */
+// Delegated click event listener attached to parent of on-screen keyboard
 qwerty.addEventListener("click", (e) => {
   if (e.target.tagName === "BUTTON") {
     const btnClicked = e.target
@@ -69,17 +70,18 @@ qwerty.addEventListener("click", (e) => {
     const letterFound = checkLetter(e.target)
     if (letterFound === null) {
       missed = missed + 1
-      ol.firstElementChild.remove()
+      document.querySelectorAll(".tries img")[missed - 1].src =
+        "images/lostHeart.png"
     }
     checkWin()
   }
 })
 
-// Check conditions for winning or losing current game display appropriate overlay
+// Check condition for winning or losing current game display appropriate overlay
 function checkWin() {
   let show = document.querySelectorAll(".show")
   let letter = document.querySelectorAll(".letter")
-  if (missed >= 5) {
+  if (missed > 4) {
     startScreen.className = "lose"
     startScreen.style.display = "flex"
     document.querySelector("#overlay h2").textContent = "You lose!"
@@ -100,8 +102,12 @@ function reset() {
   const chosenLetters = document.querySelectorAll(".chosen")
   for (let i = 0; i < chosenLetters.length; i++) {
     chosenLetters[i].classList.remove("chosen")
-    chosenLetters[i].setAttribute("disabled", false)
+    chosenLetters[i].disabled = false
   }
   const phraseArray = getRandomPhraseAsArray(phrases)
   addPhraseToDisplay(phraseArray)
+  let liveHearts = document.querySelectorAll(".tries img")
+  for (let i = 0; i < liveHearts.length; i++) {
+    liveHearts[i].src = "images/liveHeart.png"
+  }
 }
