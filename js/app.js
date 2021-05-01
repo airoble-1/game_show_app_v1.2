@@ -16,11 +16,11 @@ startButton.addEventListener("click", () => {
 
 // Phrases to select from
 const phrases = [
-  "Minions would look really weird with contacts",
-  "I still think Nicolas Cage would have made a great Superman",
-  "The road to success is always under construction",
-  "Education is important but big muscles are importanter",
-  "The best chips are chocolate ones",
+  "Be yourself everyone else is already taken",
+  "A Few Good Men",
+  "Terms of Endearment",
+  "Easy Rider",
+  "They may take our lives, but they'll never take our freedom",
 ]
 
 // Picks a randome phrase
@@ -75,7 +75,7 @@ qwerty.addEventListener("click", (e) => {
   }
 })
 
-// Check conditions for winning or losing current game
+// Check conditions for winning or losing current game display appropriate overlay
 function checkWin() {
   let show = document.querySelectorAll(".show")
   let letter = document.querySelectorAll(".letter")
@@ -83,9 +83,25 @@ function checkWin() {
     startScreen.className = "lose"
     startScreen.style.display = "flex"
     document.querySelector("#overlay h2").textContent = "You lose!"
+    reset()
   } else if (letter.length === show.length) {
     startScreen.className = "win"
     startScreen.style.display = "flex"
     document.querySelector("#overlay h2").textContent = "You Win!"
+    reset()
   }
+}
+
+// Reset game
+function reset() {
+  startButton.textContent = "Try Again?"
+  missed = 0
+  ul.textContent = ""
+  const chosenLetters = document.querySelectorAll(".chosen")
+  for (let i = 0; i < chosenLetters.length; i++) {
+    chosenLetters[i].classList.remove("chosen")
+    chosenLetters[i].setAttribute("disabled", false)
+  }
+  const phraseArray = getRandomPhraseAsArray(phrases)
+  addPhraseToDisplay(phraseArray)
 }
